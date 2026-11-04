@@ -92,6 +92,12 @@ npx wrangler deploy
 把 App 安装到目标仓库/组织。然后在仓库 Settings → Rules（或 Branch protection）里，
 Require status checks → 添加 `Human Attestation`，**来源选择你的这个 App**。
 
+### 6. 自动部署（可选）
+
+`.github/workflows/ci.yml`：每次 push / PR 都跑类型检查和测试；push 到 `main` 且测试通过后自动 `wrangler deploy`。
+需要在仓库 Secrets 里配置 `CLOUDFLARE_API_TOKEN`（需有 Workers Scripts 编辑权限）和 `CLOUDFLARE_ACCOUNT_ID`。
+部署只更新代码和 `wrangler.jsonc` 里的 vars，Worker 上已设置的 secrets 保持不变。
+
 ## 配置项（`vars`）
 
 | 变量 | 默认 | 说明 |
