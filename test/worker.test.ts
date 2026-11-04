@@ -191,7 +191,7 @@ async function attest(env: ReturnType<typeof makeEnv>, login: string | null, for
   return worker.fetch(new Request(`${ORIGIN}/attest/acme/web/5`, init), env, ctx);
 }
 
-const goodForm = { sha: SHA, statement: "1", confirm: "yes", "cf-turnstile-response": "tok" };
+const goodForm = { sha: SHA, statement: "1", "cf-turnstile-response": "tok" };
 const patches = (calls: Call[]) => calls.filter((c) => c.method === "PATCH");
 
 describe("attestation page", () => {
@@ -218,6 +218,9 @@ describe("attestation page", () => {
     expect(html).toContain("我已阅读并理解此 PR 中 Agent 编写的全部代码");
     expect(html).toContain("Add &lt;script&gt; feature");
     expect(html).not.toContain("Add <script> feature");
+    expect(html).toContain("Attest as @alice");
+    expect(html).toContain("later pushes stay attested");
+    expect(html).not.toContain('type="checkbox"');
   });
 
   it("refuses users who are neither the author nor writers", async () => {
@@ -275,7 +278,7 @@ describe("attestation page", () => {
     ["token issued on another host", { turnstile: { success: true, action: "attest", cdata: SHA, hostname: "evil.test" } }, goodForm, 403],
     ["stale commit", { headSha: "c".repeat(40) }, goodForm, 409],
     ["closed PR", { prState: "closed" }, goodForm, 409],
-    ["box not ticked", {}, { ...goodForm, confirm: "" }, 400],
+    ["no statement chosen", {}, { ...goodForm, statement: "" }, 400],
     ["bad statement index", {}, { ...goodForm, statement: "9" }, 400],
     ["no challenge token", {}, { ...goodForm, "cf-turnstile-response": "" }, 400],
   ])("does not attest on %s", async (_name, state, form, status) => {

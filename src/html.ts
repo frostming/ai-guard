@@ -15,7 +15,7 @@ fieldset{border:0;padding:0;margin:18px 0}legend{font-weight:600;margin-bottom:8
 label.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:8px 0;cursor:pointer}
 label.opt:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 input[type=radio],input[type=checkbox]{margin-top:4px}
-.confirm{display:flex;gap:10px;align-items:flex-start;margin:14px 0}
+.note{font-size:13px;margin-top:-6px}
 button{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:10px 18px;font-size:15px;font-weight:600;cursor:pointer}
 button:disabled{opacity:.5;cursor:not-allowed}
 .banner{border-radius:8px;padding:12px 14px;margin:14px 0;border:1px solid}

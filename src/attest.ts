@@ -133,13 +133,11 @@ export async function showAttestPage(request: Request, env: Env, owner: string, 
 <form method="post" id="f">
 <input type="hidden" name="sha" value="${esc(pr.head.sha)}">
 <fieldset><legend>Choose the statement that is true for this pull request</legend>${options}</fieldset>
-<label class="confirm"><input type="checkbox" name="confirm" value="yes" required><span>I, @${esc(
-    ctx.session.login,
-  )}, make this statement personally for this pull request (as of commit <code>${esc(pr.head.sha.slice(0, 7))}</code>).</span></label>
 <div class="cf-turnstile" data-sitekey="${esc(env.TURNSTILE_SITE_KEY)}" data-action="attest" data-cdata="${esc(
     pr.head.sha,
   )}" data-callback="aigReady" data-expired-callback="aigExpired"></div>
-<p><button type="submit" id="go" disabled>Attest</button></p>
+<p><button type="submit" id="go" disabled>Attest as @${esc(ctx.session.login)}</button></p>
+<p class="note muted">Recorded on this PR at commit <code>${esc(pr.head.sha.slice(0, 7))}</code>; later pushes stay attested.</p>
 </form>${whoBar(ctx)}
 <script>
 function aigReady(){document.getElementById('go').disabled=false}
@@ -158,13 +156,13 @@ export async function submitAttestation(request: Request, env: Env, owner: strin
 
   const form = await request.formData();
   const sha = String(form.get("sha") ?? "");
-  const idx = Number(form.get("statement"));
-  const confirm = form.get("confirm") === "yes";
+  const rawIdx = String(form.get("statement") ?? "");
+  const idx = /^\d+$/.test(rawIdx) ? Number(rawIdx) : -1;
   const turnstileToken = String(form.get("cf-turnstile-response") ?? "");
   const all = statements(env);
 
-  if (!confirm || !Number.isInteger(idx) || idx < 0 || idx >= all.length || !turnstileToken) {
-    return message("Incomplete", "Choose a statement, tick the confirmation box and complete the challenge.", "err", back, 400);
+  if (!Number.isInteger(idx) || idx < 0 || idx >= all.length || !turnstileToken) {
+    return message("Incomplete", "Choose a statement and complete the challenge.", "err", back, 400);
   }
 
   if (!ctx.allowed) {
