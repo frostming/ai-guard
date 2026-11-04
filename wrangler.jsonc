@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ai-guard",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "observability": { "enabled": true },
+  "vars": {
+    // Fill these in after creating the GitHub App and the Turnstile widget (see README).
+    "GITHUB_APP_ID": "5607869",
+    "GITHUB_CLIENT_ID": "Iv23liiSYPR9GsnlB4V4",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAFzDiNradh3vwv4y",
+    "CHECK_NAME": "Human Attestation",
+    // "author" | "writers" | "author_or_writers"
+    "ATTESTER_POLICY": "author_or_writers",
+    "POST_COMMENT": "true"
+    // "STATEMENTS": "[\"I confirm ...\", \"I have read ...\"]",
+    // "PUBLIC_URL": "https://ai-guard.example.com"
+  }
+  // Secrets (wrangler secret put <NAME>):
+  //   GITHUB_APP_PRIVATE_KEY, GITHUB_WEBHOOK_SECRET, GITHUB_CLIENT_SECRET,
+  //   TURNSTILE_SECRET_KEY, SESSION_SECRET
+}

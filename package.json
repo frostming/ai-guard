@@ -1,0 +1,20 @@
+{
+  "name": "ai-guard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "GitHub App on Cloudflare Workers: require a human (Turnstile + GitHub login) to attest every PR head commit.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261103.1",
+    "@types/node": "^24.19.2",
+    "typescript": "^5.6.0",
+    "vitest": "^3.2.0",
+    "wrangler": "^4.40.0"
+  }
+}
